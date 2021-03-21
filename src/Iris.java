@@ -7,21 +7,8 @@ public class Iris {
     String t4;
     String t5;
 
+    double v=0;
 
-
-
-
-
-    @Override
-    public String toString() {
-        return "Iris{" +
-                "t1='" + t1 + '\'' +
-                ", t2='" + t2 + '\'' +
-                ", t3='" + t3 + '\'' +
-                ", t4='" + t4 + '\'' +
-                ", t5='" + t5 + '\'' +
-                '}';
-    }
 
     public String getT1() {
         return t1;
@@ -62,6 +49,26 @@ public class Iris {
     public void setT5(String t5) {
         this.t5 = t5;
     }
+
+    public double getV() {
+        return v;
+    }
+
+    public void setV(double v) {
+        this.v = v;
+    }
+
+    @Override
+    public String toString() {
+        return "Iris{" +
+                "t1='" + t1 + '\'' +
+                ", t2='" + t2 + '\'' +
+                ", t3='" + t3 + '\'' +
+                ", t4='" + t4 + '\'' +
+                ", t5='" + t5 + '\'' +
+                '}';
+    }
+
 
     public Iris(String t1, String t2, String t3, String t4, String t5) {
         this.t1 = t1;
