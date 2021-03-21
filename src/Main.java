@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 public class Main {
 
     static Map<Integer,List<Iris>> testColumnMap = new HashMap<>();
+    static Map<Integer,TestMinMax> testMinMaxMap = new HashMap<>();
 
     public static void main(String[] args) throws FileNotFoundException {
 
@@ -21,29 +22,24 @@ public class Main {
 
 
             if (pilot==0){
-            for (int i=0;i<split.length;i++){
+            for (int i=0;i<split.length-1;i++){
                 testColumnMap.put(i+1, new ArrayList<>());
             }}
 
-            for (int i=0;i<split.length;i++){
-                testColumnMap.get(i+1).add(new Iris(split[i]));
+            for (int i=0;i<split.length-1;i++){
+                testColumnMap.get(i+1).add(new Iris(split[i].replace(",",".")));
             }
 
             pilot++;
         }
 
-        list.stream().forEach(System.out::println);
 
-//
-//        Double min = Collections.min(list.stream().map(iris -> Double.parseDouble(iris.getT1())).collect(Collectors.toList()));
-//        Double max = Collections.max(list.stream().map(iris -> Double.parseDouble(iris.getT1())).collect(Collectors.toList()));
-//
-//        System.out.println(min + " " + max);
-//
-//        list.stream().forEach(iris -> System.out.println((Double.parseDouble(iris.getT1()) - min) / (max - min))
-//
-//        );
 
-//        scanner.close();
+        testColumnMap.entrySet().forEach(entry -> {
+            Double min = Collections.min(entry.getValue().stream().map(iris -> Double.parseDouble(iris.getT())).collect(Collectors.toList()));
+            Double max = Collections.max(entry.getValue().stream().map(iris -> Double.parseDouble(iris.getT())).collect(Collectors.toList()));
+            testMinMaxMap.put(entry.getKey(),new TestMinMax(min,max,String.format("T%d",entry.getKey())));
+        });
+        scanner.close();
     }
 }
