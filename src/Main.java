@@ -18,15 +18,23 @@ public class Main {
 
         while(scanner.hasNext()){
             String[] split = scanner.nextLine().split(" ");
-            Iris iris = new Iris(split[0],split[1],split[2],split[3],split[4]);
+            Iris iris = new Iris(split[0].replace(',','.'),split[1].replace(',','.'),split[2].replace(',','.'),split[3].replace(',','.'),split[4]);
             list.add(iris);
 //            list.add(new Iris(Double.parseDouble(split[0]), Double.parseDouble(split[1]), Double.parseDouble(split[2]), Double.parseDouble(split[3])));
         }
 
         list.stream().forEach(System.out::println);
 
-        System.out.println(Collections.min(list.stream().map(iris -> Double.parseDouble(iris.getT1())).collect(Collectors.toList())));
 
+
+        Double min = Collections.min(list.stream().map(iris -> Double.parseDouble(iris.getT1())).collect(Collectors.toList()));
+        Double max = Collections.max(list.stream().map(iris -> Double.parseDouble(iris.getT1())).collect(Collectors.toList()));
+
+        System.out.println(min+" " + max);
+
+        list.stream().forEach(iris -> System.out.println((Double.parseDouble(iris.getT1())-min)/(max-min))
+
+        );
 
         scanner.close();
     }
