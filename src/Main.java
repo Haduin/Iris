@@ -22,8 +22,8 @@ public class Main {
             }
 
             for (int i = 0; i < split.length - 1; i++) {
-                if (i==0){
-                    description.add(split[split.length-1]);
+                if (i == 0) {
+                    description.add(split[split.length - 1]);
                 }
                 testColumnMap.get(i + 1).add(new Iris(split[i].replace(",", ".")));
             }
@@ -41,6 +41,18 @@ public class Main {
         normalizeT();
         calculateSqrt();
         scanner.close();
+
+        Scanner keyboardScanner = new Scanner(System.in);
+        boolean ryg = true;
+        while (ryg) {
+            System.out.println("Podaj K");
+            String input= keyboardScanner.nextLine();
+            if (input.equalsIgnoreCase("e")) {
+                ryg = false;
+            } else {
+                int k = Integer.parseInt(input);
+            }
+        }
     }
 
     private static void normalizeT() {
@@ -56,26 +68,27 @@ public class Main {
     }
 
     private static void calculateSqrt() {
-        Map<Integer, CalculatedRowsAndIrisType> calculatedRowsMap = new HashMap<>();
+        Map<Integer, CalculatedRowsAndIrisType> calculatedRowsMap = new LinkedHashMap<>();
         AtomicInteger rowNumber = new AtomicInteger();
 
         testColumnMap.get(1).forEach(t -> {
             double sumOfT = 0;
-            for (int i = 0; i<testColumnMap.size(); i++){
-                sumOfT +=Math.pow(testColumnMap.get(i+1).get(rowNumber.get()).getNormalizedT(),2);
+            for (int i = 0; i < testColumnMap.size(); i++) {
+                sumOfT += Math.pow(testColumnMap.get(i + 1).get(rowNumber.get()).getNormalizedT(), 2);
             }
-            calculatedRowsMap.put(rowNumber.get()+1,new CalculatedRowsAndIrisType(description.get(rowNumber.get()),Math.sqrt(sumOfT)));
+            calculatedRowsMap.put(rowNumber.get() + 1, new CalculatedRowsAndIrisType(description.get(rowNumber.get()), Math.sqrt(sumOfT)));
             rowNumber.getAndIncrement();
         });
 
 
         LinkedHashMap<Integer, CalculatedRowsAndIrisType> collect = calculatedRowsMap.entrySet().stream()
                 .sorted(Map.Entry.comparingByValue())
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
-                        (oldValue, newValue) -> oldValue, LinkedHashMap::new));
-//                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+//                .co
 //                 .forEachOrdered(x -> calculatedRowsMap.put(x.getKey(),x.getValue()));
-
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (oldValue, newValue) -> oldValue, LinkedHashMap::new));
 
 
         System.out.println("finish");

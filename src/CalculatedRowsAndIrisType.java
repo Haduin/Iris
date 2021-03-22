@@ -1,10 +1,7 @@
-public class CalculatedRowsAndIrisType implements Comparable {
+public class CalculatedRowsAndIrisType implements Comparable<CalculatedRowsAndIrisType> {
 
     private String IrisName;
     private double sumOfT;
-
-    public CalculatedRowsAndIrisType() {
-    }
 
     public CalculatedRowsAndIrisType(String irisName, double sumOfT) {
         this.sumOfT = sumOfT;
@@ -35,13 +32,13 @@ public class CalculatedRowsAndIrisType implements Comparable {
                 '}';
     }
 
-    @Override
-    public int compareTo(Object calculatedRowsAndIrisType) {
 
-        if (getSumOfT() > ((CalculatedRowsAndIrisType) calculatedRowsAndIrisType).getSumOfT()) {
+    @Override
+    public int compareTo(CalculatedRowsAndIrisType calculatedRowsAndIrisType) {
+        if (getSumOfT() > calculatedRowsAndIrisType.getSumOfT()) {
             return 1;
         }
-        if (getSumOfT() < ((CalculatedRowsAndIrisType) calculatedRowsAndIrisType).getSumOfT()) {
+        if (getSumOfT() < calculatedRowsAndIrisType.getSumOfT()) {
             return -1;
         }
         return 0;
