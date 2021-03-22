@@ -1,8 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.sql.Array;
 import java.util.*;
-import java.util.stream.Collector;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public class Main {
@@ -55,9 +54,19 @@ public class Main {
 
     private static void calculateSqrt() {
         Map<Integer, Double> calculatedRowsMap = new HashMap<>();
+        AtomicInteger rowNumber = new AtomicInteger();
 
-        testColumnMap.forEach((k,v) ->
-            v.forEach(value-> System.out.println("T"+ k + " " + value)));
+        testColumnMap.get(1).forEach(t -> {
+            double sumOfT = 0;
+            for (int i = 0; i<testColumnMap.size(); i++){
+                sumOfT +=Math.pow(testColumnMap.get(i+1).get(rowNumber.get()).getNormalizedT(),2);
+            }
+            calculatedRowsMap.put(rowNumber.get()+1,Math.sqrt(sumOfT));
+
+            rowNumber.getAndIncrement();
+        });
+
+        System.out.println("finish");
     }
 
 
