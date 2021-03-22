@@ -5,12 +5,46 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public class Main {
+    private static int k;
 
     static Map<Integer, List<Iris>> testColumnMap = new HashMap<>();
     static Map<Integer, TestMinMax> testMinMaxMap = new HashMap<>();
     private static List<String> description = new ArrayList<>();
+//    List<Double> userInputList = new ArrayList<>();
+    static List<UserDefinedIris>userDefinedIrisList= new ArrayList<>();
 
     public static void main(String[] args) throws FileNotFoundException {
+        Scanner keyboardScanner = new Scanner(System.in);
+
+        boolean ryg = true;
+        while (ryg) {
+            System.out.println("Podaj K albo zakończ [e]");
+            String input= keyboardScanner.nextLine();
+            if (input.equalsIgnoreCase("e")) {
+                ryg = false;
+            } else {
+                k = Integer.parseInt(input);
+                System.out.println("Podaj nowe parametry :");
+                boolean ryg2 = true;
+                while(ryg2){
+                    System.out.println("Podaj param albo zakończ [END]");
+
+                    String param = keyboardScanner.nextLine();
+                    if(param.equalsIgnoreCase("END")){
+                        ryg2 = false;
+                    }else{
+                        userDefinedIrisList.add(new UserDefinedIris(param));
+                    }
+
+                }
+
+
+            }
+        }
+        keyboardScanner.close();
+
+
+
         Scanner scanner = new Scanner(new File("C:\\Users\\48505\\Desktop\\Iris\\iris_training.txt"));
         int pilot = 0;
         while (scanner.hasNext()) {
@@ -31,29 +65,29 @@ public class Main {
             pilot++;
         }
 
+        AtomicInteger pilot2= new AtomicInteger();
 
         testColumnMap.forEach((key, value) -> {
-            Double min = Collections.min(value.stream().map(iris -> Double.parseDouble(iris.getT())).collect(Collectors.toList()));
-            Double max = Collections.max(value.stream().map(iris -> Double.parseDouble(iris.getT())).collect(Collectors.toList()));
+            List<Double> parsedTvalues = value.stream().map(iris -> Double.parseDouble(iris.getT())).collect(Collectors.toList());
+            List<Double> emptyList = new ArrayList<>();
+            emptyList.addAll(parsedTvalues);
+//            Collections.copy(emptyList,parsedTvalues);
+            emptyList.add(userDefinedIrisList.get(pilot2.get()).gettValue());
+            Double min = Collections.min(emptyList);
+            Double max = Collections.max(emptyList);
             testMinMaxMap.put(key, new TestMinMax(min, max, String.format("T%d", key)));
+            pilot2.incrementAndGet();
         });
 
         normalizeT();
         calculateSqrt();
         scanner.close();
 
-        Scanner keyboardScanner = new Scanner(System.in);
-        boolean ryg = true;
-        while (ryg) {
-            System.out.println("Podaj K");
-            String input= keyboardScanner.nextLine();
-            if (input.equalsIgnoreCase("e")) {
-                ryg = false;
-            } else {
-                int k = Integer.parseInt(input);
-            }
-        }
+
+
     }
+//
+//    private static Double normalizeUserT(List<UserDefinedIris> userDefinedIrisList, M)
 
     private static void normalizeT() {
 
@@ -81,10 +115,8 @@ public class Main {
         });
 
 
-        LinkedHashMap<Integer, CalculatedRowsAndIrisType> collect = calculatedRowsMap.entrySet().stream()
+        LinkedHashMap<Integer, CalculatedRowsAndIrisType> collectedMap = calculatedRowsMap.entrySet().stream()
                 .sorted(Map.Entry.comparingByValue())
-//                .co
-//                 .forEachOrdered(x -> calculatedRowsMap.put(x.getKey(),x.getValue()));
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
                         Map.Entry::getValue,
@@ -95,6 +127,23 @@ public class Main {
 
 
     }
+
+
+//    public int closest(double in, ) {
+//        int min = Integer.MAX_VALUE;
+//        int closest = of;
+//
+//        for (int v : in) {
+//            final int diff = Math.abs(v - of);
+//
+//            if (diff < min) {
+//                min = diff;
+//                closest = v;
+//            }
+//        }
+//
+//        return closest;
+//    }
 
 
 }
