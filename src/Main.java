@@ -8,10 +8,10 @@ public class Main {
 
     static Map<Integer, List<Iris>> testColumnMap = new HashMap<>();
     static Map<Integer, TestMinMax> testMinMaxMap = new HashMap<>();
+    private static List<String> description = new ArrayList<>();
 
     public static void main(String[] args) throws FileNotFoundException {
         Scanner scanner = new Scanner(new File("C:\\Users\\48505\\Desktop\\Iris\\iris_training.txt"));
-
         int pilot = 0;
         while (scanner.hasNext()) {
             String[] split = scanner.nextLine().split(" ");
@@ -22,6 +22,9 @@ public class Main {
             }
 
             for (int i = 0; i < split.length - 1; i++) {
+                if (i==0){
+                    description.add(split[split.length-1]);
+                }
                 testColumnMap.get(i + 1).add(new Iris(split[i].replace(",", ".")));
             }
 
@@ -53,7 +56,7 @@ public class Main {
     }
 
     private static void calculateSqrt() {
-        Map<Integer, Double> calculatedRowsMap = new HashMap<>();
+        Map<Integer, CalculatedRowsAndIrisType> calculatedRowsMap = new HashMap<>();
         AtomicInteger rowNumber = new AtomicInteger();
 
         testColumnMap.get(1).forEach(t -> {
@@ -61,12 +64,23 @@ public class Main {
             for (int i = 0; i<testColumnMap.size(); i++){
                 sumOfT +=Math.pow(testColumnMap.get(i+1).get(rowNumber.get()).getNormalizedT(),2);
             }
-            calculatedRowsMap.put(rowNumber.get()+1,Math.sqrt(sumOfT));
-
+            calculatedRowsMap.put(rowNumber.get()+1,new CalculatedRowsAndIrisType(description.get(rowNumber.get()),Math.sqrt(sumOfT)));
             rowNumber.getAndIncrement();
         });
 
+
+        LinkedHashMap<Integer, CalculatedRowsAndIrisType> collect = calculatedRowsMap.entrySet().stream()
+                .sorted(Map.Entry.comparingByValue())
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
+                        (oldValue, newValue) -> oldValue, LinkedHashMap::new));
+//                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+//                 .forEachOrdered(x -> calculatedRowsMap.put(x.getKey(),x.getValue()));
+
+
+
         System.out.println("finish");
+
+
     }
 
 
