@@ -45,7 +45,7 @@ public class Main {
 
 
 
-        Scanner scanner = new Scanner(new File("C:\\Users\\48505\\Desktop\\Iris\\iris_training.txt"));
+        Scanner scanner = new Scanner(new File("C:\\Users\\Cuba\\Desktop\\studia\\IV\\NAI\\cwiczenia\\2\\Iris\\iris_training.txt"));
         int pilot = 0;
         while (scanner.hasNext()) {
             String[] split = scanner.nextLine().split(" ");
@@ -69,25 +69,45 @@ public class Main {
 
         testColumnMap.forEach((key, value) -> {
             List<Double> parsedTvalues = value.stream().map(iris -> Double.parseDouble(iris.getT())).collect(Collectors.toList());
-            List<Double> emptyList = new ArrayList<>();
-            emptyList.addAll(parsedTvalues);
-//            Collections.copy(emptyList,parsedTvalues);
-            emptyList.add(userDefinedIrisList.get(pilot2.get()).gettValue());
-            Double min = Collections.min(emptyList);
-            Double max = Collections.max(emptyList);
+            List<Double> dummyList = new ArrayList<>();
+            dummyList.addAll(parsedTvalues);
+//            Collections.copy(dummyList,parsedTvalues);
+            dummyList.add(userDefinedIrisList.get(pilot2.get()).gettValue());
+            Double min = Collections.min(dummyList);
+            Double max = Collections.max(dummyList);
             testMinMaxMap.put(key, new TestMinMax(min, max, String.format("T%d", key)));
+
+
+
             pilot2.incrementAndGet();
         });
 
+
+
         normalizeT();
         calculateSqrt();
+        System.out.println(normalizeUserT());
         scanner.close();
 
 
 
     }
 //
-//    private static Double normalizeUserT(List<UserDefinedIris> userDefinedIrisList, M)
+    private static Double normalizeUserT(){
+        double normalizedValue[]= new double[userDefinedIrisList.size()];
+        for(int i = 0;i<userDefinedIrisList.size();i++){
+             normalizedValue[i] = (userDefinedIrisList.get(i).gettValue() - testMinMaxMap.get(i+1).getMin()) / (testMinMaxMap.get(i+1).getMax() - testMinMaxMap.get(i+1).getMin());
+        }
+
+        double v =0;
+        for(double d :normalizedValue){
+            v += Math.pow(d, 2);
+        }
+
+        return Math.sqrt(v);
+
+
+    }
 
     private static void normalizeT() {
 
