@@ -2,7 +2,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
+
+import static java.lang.Double.MAX_VALUE;
 
 public class Main {
     private static int k;
@@ -45,7 +48,8 @@ public class Main {
 
 
 
-        Scanner scanner = new Scanner(new File("C:\\Users\\Cuba\\Desktop\\studia\\IV\\NAI\\cwiczenia\\2\\Iris\\iris_training.txt"));
+//        Scanner scanner = new Scanner(new File("C:\\Users\\Cuba\\Desktop\\studia\\IV\\NAI\\cwiczenia\\2\\Iris\\iris_training.txt"));
+        Scanner scanner = new Scanner(new File("C:\\Users\\48505\\Desktop\\Iris\\iris_training.txt"));
         int pilot = 0;
         while (scanner.hasNext()) {
             String[] split = scanner.nextLine().split(" ");
@@ -86,7 +90,9 @@ public class Main {
 
         normalizeT();
         calculateSqrt();
-        System.out.println(normalizeUserT());
+
+        double closest = CollectionsExplorer.findClosest(normalizeUserT(), sortedMap);
+        CollectionsExplorer.findAllIrises(k, sortedMap,closest);
         scanner.close();
 
 
@@ -104,8 +110,9 @@ public class Main {
             v += Math.pow(d, 2);
         }
 
-        return Math.sqrt(v);
 
+
+        return Math.sqrt(v);
 
     }
 
@@ -120,6 +127,7 @@ public class Main {
             });
         });
     }
+    static LinkedHashMap<Integer, CalculatedRowsAndIrisType> sortedMap;
 
     private static void calculateSqrt() {
         Map<Integer, CalculatedRowsAndIrisType> calculatedRowsMap = new LinkedHashMap<>();
@@ -135,7 +143,7 @@ public class Main {
         });
 
 
-        LinkedHashMap<Integer, CalculatedRowsAndIrisType> collectedMap = calculatedRowsMap.entrySet().stream()
+        sortedMap = calculatedRowsMap.entrySet().stream()
                 .sorted(Map.Entry.comparingByValue())
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
@@ -143,27 +151,29 @@ public class Main {
                         (oldValue, newValue) -> oldValue, LinkedHashMap::new));
 
 
-        System.out.println("finish");
-
 
     }
 
 
-//    public int closest(double in, ) {
-//        int min = Integer.MAX_VALUE;
-//        int closest = of;
-//
-//        for (int v : in) {
-//            final int diff = Math.abs(v - of);
-//
-//            if (diff < min) {
-//                min = diff;
-//                closest = v;
-//            }
-//        }
-//
-//        return closest;
-//    }
+    public static Double closest(double userNormalizedValue) {
+
+        AtomicReference<Double> min = new AtomicReference<>(MAX_VALUE);
+        AtomicReference<Double> closest = new AtomicReference<>(userNormalizedValue);
+
+        Double finalClosest = closest.get();
+        double finalMin = min.get();
+        sortedMap.forEach((key, value) -> {
+            final double diff = Math.abs(value.getSumOfT()- finalClosest);
+
+            if (diff < finalMin){
+                min.set(diff);
+                closest.set(value.getSumOfT());
+            }
+        });
+
+
+        return closest.get();
+    }
 
 
 }
