@@ -95,10 +95,8 @@ public class Main {
         CollectionsExplorer.findAllIrises(k, sortedMap,closest);
         scanner.close();
 
-
-
     }
-//
+
     private static Double normalizeUserT(){
         double normalizedValue[]= new double[userDefinedIrisList.size()];
         for(int i = 0;i<userDefinedIrisList.size();i++){
@@ -110,10 +108,7 @@ public class Main {
             v += Math.pow(d, 2);
         }
 
-
-
         return Math.sqrt(v);
-
     }
 
     private static void normalizeT() {
@@ -149,9 +144,6 @@ public class Main {
                         Map.Entry::getKey,
                         Map.Entry::getValue,
                         (oldValue, newValue) -> oldValue, LinkedHashMap::new));
-
-
-
     }
 
 

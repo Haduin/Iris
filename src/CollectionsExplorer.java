@@ -94,14 +94,13 @@ class CollectionsExplorer {
                 k-=2;
                 continue;
             }
-            if (k==1){
+            if (k<3){
                 int distanceFromCenter = halfOFChoosenList-i;
                 Double upperValue = theClosestElements.get(halfOFChoosenList + distanceFromCenter);
                 Double lowerValue = theClosestElements.get(halfOFChoosenList - distanceFromCenter);
                 Double whichToInsert = Math.abs(closest-upperValue)>Math.abs(closest-lowerValue)? upperValue:lowerValue;
                 choosenList.add(whichToInsert);
                 k--;
-                continue;
             }
 
         }
@@ -111,6 +110,6 @@ class CollectionsExplorer {
         List<String> genresTypes = allCalculatedRowsAndIrisType.stream().filter(calculatedRowsAndIrisType -> choosenList.contains(calculatedRowsAndIrisType.getSumOfT()))
                 .map(calculatedRowsAndIrisType -> calculatedRowsAndIrisType.getIrisName()).collect(Collectors.toList());
 
-        return Collections.singletonList("");
+        return genresTypes;
     }
 }
