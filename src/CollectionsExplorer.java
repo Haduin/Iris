@@ -7,8 +7,7 @@ class CollectionsExplorer {
 
     // Returns element closest to target in arr[] 
 //    public static double findClosest(double arr[], double target)
-    public static double findClosest(double target, LinkedHashMap<Integer, CalculatedRowsAndIrisType> sortedMap)
-    {
+    public static double findClosest(double target, LinkedHashMap<Integer, CalculatedRowsAndIrisType> sortedMap) {
         Double[] arr = sortedMap.values().stream().map(CalculatedRowsAndIrisType::getSumOfT).toArray(Double[]::new);
         int n = arr.length;
 
@@ -53,7 +52,7 @@ class CollectionsExplorer {
             return val1;
     }
 
-    public static List<String> findAllIrises(int k, LinkedHashMap<Integer, CalculatedRowsAndIrisType> sortedMap, double closest) {
+    public static String findAllIrises(int k, LinkedHashMap<Integer, CalculatedRowsAndIrisType> sortedMap, double closest) {
 
         Double[] arr = sortedMap.values().stream().map(CalculatedRowsAndIrisType::getSumOfT).toArray(Double[]::new);
 
@@ -87,14 +86,14 @@ class CollectionsExplorer {
                 k--;
                 continue;
             }
-            if (k>=3){
+            if (k>=2){
                 int distanceFromCenter = halfOFChoosenList-i;
                 choosenList.add(theClosestElements.get(halfOFChoosenList+distanceFromCenter));
                 choosenList.add(theClosestElements.get(halfOFChoosenList-distanceFromCenter));
                 k-=2;
                 continue;
             }
-            if (k<3){
+            if (k<2){
                 int distanceFromCenter = halfOFChoosenList-i;
                 Double upperValue = theClosestElements.get(halfOFChoosenList + distanceFromCenter);
                 Double lowerValue = theClosestElements.get(halfOFChoosenList - distanceFromCenter);
@@ -102,7 +101,6 @@ class CollectionsExplorer {
                 choosenList.add(whichToInsert);
                 k--;
             }
-
         }
 
 
@@ -110,6 +108,26 @@ class CollectionsExplorer {
         List<String> genresTypes = allCalculatedRowsAndIrisType.stream().filter(calculatedRowsAndIrisType -> choosenList.contains(calculatedRowsAndIrisType.getSumOfT()))
                 .map(calculatedRowsAndIrisType -> calculatedRowsAndIrisType.getIrisName()).collect(Collectors.toList());
 
-        return genresTypes;
+        Map<String,Integer>m = new HashMap<>();
+
+        for(String s : genresTypes){
+            if(!m.containsKey(s)){
+                m.put(s,1);
+            }else{
+                m.put(s,m.get(s).intValue()+1);
+            }
+        }
+
+
+
+//        System.out.println(m);
+//        System.out.println(genresTypes);
+
+
+
+        return m.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder())).collect(Collectors.toList()).get(0).getKey();
+
+
+
     }
 }

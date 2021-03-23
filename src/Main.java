@@ -19,37 +19,38 @@ public class Main {
     public static void main(String[] args) throws FileNotFoundException {
         Scanner keyboardScanner = new Scanner(System.in);
 
-        boolean ryg = true;
-        while (ryg) {
-            System.out.println("Podaj K albo zakończ [e]");
-            String input= keyboardScanner.nextLine();
-            if (input.equalsIgnoreCase("e")) {
-                ryg = false;
-            } else {
-                k = Integer.parseInt(input);
-                System.out.println("Podaj nowe parametry :");
-                boolean ryg2 = true;
-                while(ryg2){
-                    System.out.println("Podaj param albo zakończ [END]");
-
-                    String param = keyboardScanner.nextLine();
-                    if(param.equalsIgnoreCase("END")){
-                        ryg2 = false;
-                    }else{
-                        userDefinedIrisList.add(new UserDefinedIris(param));
-                    }
-
-                }
-
-
-            }
-        }
-        keyboardScanner.close();
+//        boolean ryg = true;
+//        while (ryg) {
+//            System.out.println("Podaj K albo zakończ [e]");
+//            String input= keyboardScanner.nextLine();
+//            if (input.equalsIgnoreCase("e")) {
+//                ryg = false;
+//            } else {
+//                k = Integer.parseInt(input);
+//                System.out.println("Podaj nowe parametry :");
+//                boolean ryg2 = true;
+//                while(ryg2){
+//                    System.out.println("Podaj param albo zakończ [END]");
+//
+//                    String param = keyboardScanner.nextLine();
+//                    if(param.equalsIgnoreCase("END")){
+//                        ryg2 = false;
+//
+//                    }else{
+//                        userDefinedIrisList.add(new UserDefinedIris(param));
+//                    }
+//
+//                }
+//
+//
+//            }
+//        }
+//        keyboardScanner.close();
 
 
 
 //        Scanner scanner = new Scanner(new File("C:\\Users\\Cuba\\Desktop\\studia\\IV\\NAI\\cwiczenia\\2\\Iris\\iris_training.txt"));
-        Scanner scanner = new Scanner(new File("C:\\Users\\48505\\Desktop\\Iris\\iris_training.txt"));
+        Scanner scanner = new Scanner(new File("C:\\Users\\Cuba\\Desktop\\studia\\IV\\NAI\\cwiczenia\\2\\Iris\\iris_training.txt"));
         int pilot = 0;
         while (scanner.hasNext()) {
             String[] split = scanner.nextLine().split(" ");
@@ -92,7 +93,9 @@ public class Main {
         calculateSqrt();
 
         double closest = CollectionsExplorer.findClosest(normalizeUserT(), sortedMap);
-        CollectionsExplorer.findAllIrises(k, sortedMap,closest);
+        System.out.println(CollectionsExplorer.findAllIrises(k, sortedMap,closest));
+
+
         scanner.close();
 
     }
